@@ -1,0 +1,9 @@
+package pretty
+
+    import "github.com/bloom42/stdx-go/deprecated/pretty"
+
+    Package pretty provides pretty-printing for Go values.
+
+Documentation
+
+    http://godoc.org/github.com/bloom42/stdx-go/deprecated/pretty
