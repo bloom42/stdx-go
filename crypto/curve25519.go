@@ -1,6 +1,7 @@
 package crypto
 
 import (
+	"github.com/bloom42/stdx-go/crypto/chacha20blake3"
 	"golang.org/x/crypto/blake2b"
 	"golang.org/x/crypto/curve25519"
 )
@@ -43,7 +44,7 @@ func (publicKey Curve25519PublicKey) Encrypt(fromPrivateKey Curve25519PrivateKey
 		return
 	}
 
-	cipher, err := NewAEAD(sharedSecret)
+	cipher, err := chacha20blake3.New(sharedSecret)
 	if err != nil {
 		return
 	}
@@ -75,7 +76,7 @@ func generateNonce(ephemeralPublicKey, publicKey Curve25519PublicKey) (nonce []b
 
 	nonceMessage = append(nonceMessage, []byte(ephemeralPublicKey)...)
 	nonceMessage = append(nonceMessage, []byte(publicKey)...)
-	hash, err := blake2b.New(AEADNonceSize, nil)
+	hash, err := blake2b.New(chacha20blake3.NonceSize, nil)
 	if err != nil {
 		return
 	}
@@ -108,7 +109,7 @@ func (privateKey Curve25519PrivateKey) Decrypt(fromPublicKey Curve25519PublicKey
 		return
 	}
 
-	cipher, err := NewAEAD(sharedSecret)
+	cipher, err := chacha20blake3.New(sharedSecret)
 	if err != nil {
 		return
 	}

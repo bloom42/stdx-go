@@ -1,7 +1,11 @@
 package chacha20blake3_test
 
 import (
+	"bytes"
 	"encoding/hex"
+	"testing"
+
+	"github.com/bloom42/stdx-go/crypto/chacha20blake3"
 )
 
 func toHex(bits []byte) string {
@@ -16,31 +20,31 @@ func fromHex(bits string) []byte {
 	return b
 }
 
-// func TestVectorsChaCha20Blake3(t *testing.T) {
-// 	for i, v := range chacha20Blake3Vectors {
-// 		dst := make([]byte, len(v.plaintext)+chacha20blake3.TagSize)
+func TestVectorsChaCha20Blake3(t *testing.T) {
+	for i, v := range chacha20Blake3Vectors {
+		dst := make([]byte, len(v.plaintext)+chacha20blake3.TagSize)
 
-// 		cipher, err := chacha20blake3.New(v.key)
-// 		if err != nil {
-// 			t.Errorf("plaintext: %s", toHex(v.plaintext))
-// 			t.Errorf("nonce: %s", toHex(v.nonce))
-// 			t.Fatal(err)
-// 		}
+		cipher, err := chacha20blake3.New(v.key)
+		if err != nil {
+			t.Errorf("plaintext: %s", toHex(v.plaintext))
+			t.Errorf("nonce: %s", toHex(v.nonce))
+			t.Fatal(err)
+		}
 
-// 		cipher.Seal(dst[:0], v.nonce, v.plaintext, v.additionalData)
-// 		if !bytes.Equal(dst, v.ciphertext) {
-// 			t.Errorf("Test %d: ciphertext mismatch:\ngot:  %s\nwant: %s", i, toHex(dst), toHex(v.ciphertext))
-// 		}
+		cipher.Seal(dst[:0], v.nonce, v.plaintext, v.additionalData)
+		if !bytes.Equal(dst, v.ciphertext) {
+			t.Errorf("Test %d: ciphertext mismatch:\ngot:  %s\nwant: %s", i, toHex(dst), toHex(v.ciphertext))
+		}
 
-// 		decryptedPlaintext, err := cipher.Open(nil, v.nonce, dst, v.additionalData)
-// 		if err != nil {
-// 			t.Errorf("Test %d: %v", i, err)
-// 		}
-// 		if !bytes.Equal(decryptedPlaintext, v.plaintext) {
-// 			t.Errorf("Test %d: plaintext mismatch:\ngot:  %s\nwant: %s", i, toHex(decryptedPlaintext), toHex(v.plaintext))
-// 		}
-// 	}
-// }
+		decryptedPlaintext, err := cipher.Open(nil, v.nonce, dst, v.additionalData)
+		if err != nil {
+			t.Errorf("Test %d: %v", i, err)
+		}
+		if !bytes.Equal(decryptedPlaintext, v.plaintext) {
+			t.Errorf("Test %d: plaintext mismatch:\ngot:  %s\nwant: %s", i, toHex(decryptedPlaintext), toHex(v.plaintext))
+		}
+	}
+}
 
 // func TestBasicX(t *testing.T) {
 // 	var key [chacha20blake3.KeySize]byte
@@ -87,32 +91,32 @@ func fromHex(bits string) []byte {
 // 	}
 // }
 
-// var chacha20Blake3Vectors = []struct {
-// 	key            []byte
-// 	nonce          []byte
-// 	plaintext      []byte
-// 	additionalData []byte
-// 	ciphertext     []byte
-// }{
-// 	{
-// 		fromHex("0000000000000000000000000000000000000000000000000000000000000000"),
-// 		fromHex("0000000000000000"),
-// 		fromHex("48656C6C6F20576F726C6421"), //  Hello World!
-// 		nil,
-// 		fromHex("d7628bd23a716f15ead6f35d7a6be6fd6ee37de0c569f11705e9c1ba5b576d0886d0f7f1b5fdb82ea07856d7"),
-// 	},
-// 	{
-// 		fromHex("0100000000000000000000000000000000000000000000000000000000000010"),
-// 		fromHex("0100000000000010"),
-// 		fromHex("4368614368613230"), // ChaCha20
-// 		fromHex("424C414B4533"),     // BLAKE3
-// 		fromHex("9f7a1c78e49065c7627ebc71dfe55740dc0ff6164667b3192b928a189da4b6153b579262acda29bb"),
-// 	},
-// 	{
-// 		fromHex("a9541ec64e971c19216360a28aebffdefdbc2f2b4f8d683a2c5c17c12e86059d"),
-// 		fromHex("5722cf5d7efbc3a1"),
-// 		fromHex("112103a99299c403eb92c29ee81f8faa2c4bab00ef4a92ddb3cf7d0c3ec63d19b81ff83defbfa34fb1ac5bf594306a541fb4ba3c18f700d6d38d2eed4f118760"),
-// 		fromHex("bd3c8a9c2c9362c392dd9b9ae7e31552"),
-// 		fromHex("f8742d7ec6862e53715e526f1b91c8c3d60b005d93ea924ca7377e81d8cad3f69d102d604c0688befb8c0fbdfc499bf10ab55021e87d66b2cdee57401a93c4ddcd2501adf933f45bb6309810c744205d0e9d69b9943afa2f01188e2b91be7f11"),
-// 	},
-// }
+var chacha20Blake3Vectors = []struct {
+	key            []byte
+	nonce          []byte
+	plaintext      []byte
+	additionalData []byte
+	ciphertext     []byte
+}{
+	{
+		fromHex("0000000000000000000000000000000000000000000000000000000000000000"),
+		fromHex("0000000000000000000000000000000000000000000000000000000000000000"),
+		fromHex("48656c6c6f20576f726c6421"), //  Hello World!
+		nil,
+		fromHex("272659c2b44c64b01cb0fc383f9d2664e940dd410bd752390cf701dacd2d847980ee4e8a82bf87a1d57771fd"),
+	},
+	{
+		fromHex("0100000000000000000000000000000000000000000000000000000000000010"),
+		fromHex("0100000000000000000000000000000000000000000000000000000000000010"),
+		fromHex("4368614368613230"), // ChaCha20
+		fromHex("424c414b4533"),     // BLAKE3
+		fromHex("f219d44d74d66e28cee192edc71ead02fa79897a195c36a21512fbd0625490a4cff26c0855d6d5bc"),
+	},
+	{
+		fromHex("3eb02a239a2a66de159b9bb5486ccc10a6f63ddf5862ef076650513372353622"),
+		fromHex("768e9bda14afb5686cc34de26210f9ff6fa1dfadc64ee3f0793e4979a30fc304"),
+		fromHex("b8f60975cd7057a003ac84df00d514624fe40cb7855c50dd6594f59b3a2580e5"),
+		fromHex("c8d69ca92da6c5fd22f1805179fcd36cb7a9d45848fa346ba7118c2f34d23a48"),
+		fromHex("1e72c231100afaa0d4922faf0536a0d2ce139f21d4009fa3268595e5246f6c3c2fdf26cc4723d5bba49ed6c7f050b3db2eec2353419fa3d1ddfc908f0e120984"),
+	},
+}

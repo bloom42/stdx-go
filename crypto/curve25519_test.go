@@ -3,12 +3,13 @@ package crypto
 import (
 	"testing"
 
+	"github.com/bloom42/stdx-go/crypto/chacha20blake3"
 	"golang.org/x/crypto/curve25519"
 )
 
 func TestCurve25519EncryptDecrypt(t *testing.T) {
 	message := []byte("this is a simple message")
-	nonce := RandBytes(AEADNonceSize)
+	nonce := RandBytes(chacha20blake3.NonceSize)
 
 	toPublicKey, toPrivateKey, err := GenerateCurve25519KeyPair()
 	if err != nil {
