@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/bloom42/stdx-go/crypto/chacha12blake3"
 	"github.com/bloom42/stdx-go/crypto/chacha20blake3"
 	"github.com/bloom42/stdx-go/crypto/xchacha20sha256"
 	"golang.org/x/crypto/chacha20"
@@ -34,7 +35,9 @@ func BenchmarkEncryptAEAD(b *testing.B) {
 
 	for _, size := range BENCHMARKS {
 		benchmarkEncrypt(b, size, "XChaCha20-Poly1305", newXChaCha20Poly1305Cipher(b, chaCha20Key), xChaCha20Nonce, additionalData)
+		benchmarkEncrypt(b, size, "ChaCha12-BLAKE3", newChaCha12Blake3Cipher(b, chaCha20Key), chaCha20Blake3Nonce, additionalData)
 		benchmarkEncrypt(b, size, "ChaCha20-BLAKE3", newChaCha20Blake3Cipher(b, chaCha20Key), chaCha20Blake3Nonce, additionalData)
+		benchmarkEncrypt(b, size, "XChaCha20-SHA256", newXChaCha20Sha256Cipher(b, chaCha20Key), xChaCha20Nonce, additionalData)
 	}
 }
 
@@ -47,6 +50,7 @@ func BenchmarkDecryptAEAD(b *testing.B) {
 
 	for _, size := range BENCHMARKS {
 		benchmarkDecrypt(b, size, "XChaCha20-Poly1305", newXChaCha20Poly1305Cipher(b, chaCha20Key), xChaCha20Nonce, additionalData)
+		benchmarkDecrypt(b, size, "ChaCha12-BLAKE3", newChaCha12Blake3Cipher(b, chaCha20Key), chaCha20Blake3Nonce, additionalData)
 		benchmarkDecrypt(b, size, "ChaCha20-BLAKE3", newChaCha20Blake3Cipher(b, chaCha20Key), chaCha20Blake3Nonce, additionalData)
 		benchmarkDecrypt(b, size, "XChaCha20-SHA256", newXChaCha20Sha256Cipher(b, chaCha20Key), xChaCha20Nonce, additionalData)
 	}
@@ -78,6 +82,15 @@ func benchmarkDecrypt[C cipher.AEAD](b *testing.B, size int64, algorithm string,
 			cipher.Open(dst, nonce, cipherText, additionalData)
 		}
 	})
+}
+
+func newChaCha12Blake3Cipher(b *testing.B, key []byte) *chacha12blake3.ChaCha12Blake3 {
+	cipher, err := chacha12blake3.New(key)
+	if err != nil {
+		b.Error(err)
+	}
+
+	return cipher
 }
 
 func newChaCha20Blake3Cipher(b *testing.B, key []byte) *chacha20blake3.ChaCha20Blake3 {
