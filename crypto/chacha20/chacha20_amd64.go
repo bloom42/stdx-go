@@ -18,5 +18,5 @@ func New(key, nonce []byte) (StreamCipher, error) {
 	}
 
 	copy(ietfNonce[4:12], nonce[0:8])
-	return chacha.NewCipher(ietfNonce, key, 20)
+	return chacha.NewCipher(ietfNonce[:], key, 20)
 }
