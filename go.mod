@@ -3,7 +3,7 @@ module github.com/bloom42/stdx-go
 go 1.24
 
 require (
-	github.com/alecthomas/chroma/v2 v2.17.2
+	github.com/alecthomas/chroma/v2 v2.18.0
 	github.com/aws/aws-sdk-go-v2 v1.36.3
 	github.com/aws/aws-sdk-go-v2/config v1.29.14
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.67
@@ -11,13 +11,14 @@ require (
 	github.com/creack/pty v1.1.24
 	github.com/fsnotify/fsnotify v1.9.0
 	github.com/go-chi/chi/v5 v5.2.1
-	github.com/jackc/pgx/v5 v5.7.4
+	github.com/jackc/pgx/v5 v5.7.5
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/klauspost/cpuid/v2 v2.2.10
-	github.com/minio/minio-go/v7 v7.0.91
+	github.com/minio/minio-go/v7 v7.0.92
 	github.com/mmcloughlin/avo v0.6.0
 	github.com/rogpeppe/go-internal v1.14.1
-	github.com/yuin/goldmark v1.7.11
+	github.com/tetratelabs/wazero v1.9.0
+	github.com/yuin/goldmark v1.7.12
 	golang.org/x/crypto v0.38.0
 	golang.org/x/image v0.27.0
 	golang.org/x/mod v0.24.0
@@ -53,6 +54,8 @@ require (
 	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/minio/crc64nvme v1.0.2 // indirect
 	github.com/minio/md5-simd v1.1.2 // indirect
+	github.com/philhofer/fwd v1.1.3-0.20240916144458-20a13a1f6b7c // indirect
 	github.com/rs/xid v1.6.0 // indirect
+	github.com/tinylib/msgp v1.3.0 // indirect
 	golang.org/x/tools v0.33.0 // indirect
 )
